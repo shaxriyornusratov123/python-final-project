@@ -45,6 +45,18 @@ class BankAccount:
 
     def __str__(self):
         return f"BankAccount<name={self.name}>"
+    
+
+    def deposit(self,amount:int):
+        amount=int(input("enter amount! "))
+        self.balance+=amount
+        return self.balance
+    
+    def withdraw(self,amount):
+        self.balance-=amount
+        if amount>self.balance:
+            raise "balansda yetarli mablag' mavjud emas! "
+        
 
 
 # =============== Globals
@@ -108,11 +120,11 @@ def search_account():
     if is_end == '\n':
         return None
 
-def deposit():
-    pass
+# def deposit():
+#     pass
 
-def withdraw():
-    pass
+# def withdraw():
+#     pass
 
 def view_transactions():
     pass
@@ -138,9 +150,9 @@ def main_menu() -> None:
         elif choice == 3:
             search_account()
         elif choice == 4:
-            deposit()
+            BankAccount.deposit()
         elif choice == 5:
-            withdraw()
+            BankAccount.withdraw()
         elif choice == 6:
             view_transactions()
         elif choice == 7:
