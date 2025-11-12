@@ -1,68 +1,56 @@
 import uuid
-from datetime import datetime,timezone
+from datetime import datetime, timezone
+
+# =============== Definitions
 
 
 class Transaction:
-    def __init__(self,id: uuid.UUID,
-        type:str,
-        sender_name:str,
-        receiver_name:str,
-        amount:int,
-        status:str,
-        datetime: datetime
-        )->None:
-        self.id=id
-        self.type=type
-        self.sender_name=sender_name
-        self.receiver_name=receiver_name
-        self.amount=amount
-        self.stutus=status
-        self.datetime=datetime
+    def __init__(
+        self,
+        id: uuid.UUID,
+        type: str,
+        sender_name: str,
+        receiver_name: str,
+        amount: int,
+        status: str,
+        datetime: datetime,
+    ) -> None:
+        self.id = id
+        self.type = type
+        self.sender_name = sender_name
+        self.receiver_name = receiver_name
+        self.amount = amount
+        self.status = status
+        self.datetime = datetime
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Transaction<id={str(self.id)}>"
 
+
 class BankAccount:
-
-
-
-    def __init__(self,
-                id:uuid.UUID, 
-                name:str, 
-                balance: int,
-                account_number:int,
-                created_at:datetime)->None:
-        self.id=id
-        self.name=name
-        self.balance=balance
-        self.account_number=account_number
-        self.created_at=created_at
-
+    def __init__(
+        self,
+        id: uuid.UUID,
+        name: str,
+        account_number: str,
+        balance: int,
+        created_at: datetime,
+    ) -> None:
+        self.id = id
+        self.name = name
+        self.account_number = account_number
+        self.balance = balance
+        self.created_at = created_at
+        self.transactions: list[Transaction] = []
 
     def __str__(self):
-        return f"name:{self.name}"
-    
-
-    # def deposit(self,amount:int):
-    #     self.balance+=amount 
-    
-    
-        
-
-    def withdraw(self,amount):
-        pass
-
-    def view_transactions():
-        pass
-
-    def delete_account():
-        pass
+        return f"BankAccount<name={self.name}>"
 
 
+# =============== Globals
 
-accounts: list[Transaction]=[]
-menu_text:str="""
-=== Bank System Menu ===
+accounts: list[BankAccount] = []
+menu_text: str = """=== Bank System Menu ===
 1. Create New Account
 2. View All Accounts
 3. Search Account
@@ -71,31 +59,32 @@ menu_text:str="""
 6. View Transactions
 7. Delete Account
 8. Exit
-========================
-"""
-current_account=None
+========================"""
+current_account = None
 
-#======================= core logic
+# =============== Core Logic
 
-def create_account():
-    print("siz yangi akkaunt ochmoqchchisiz. quyidagi malumotlarni kiriting: ")
-
-    name: str=input("F.I.SH: ")
-    account_number:str=input("akkaunt raqamingiz: ")
-    balance: int= int(input("mavjud blansingiz: "))
+def create_account() -> BankAccount:
+    print("Siz yangi akkaunt ochmoqchisiz. Quyidagi ma'lumotlarni kiriting:")
     
-
-    id: uuid.UUID=uuid.uuid4()
-    created_at: datetime=datetime.now(timezone.utc)
-
-    new_account: BankAccount=BankAccount(
+    name: str = input("F.I.Sh: ")
+    account_number: str = input("Akkaunt raqamingiz: ")
+    balance: int = int(input("Mavjud balansingiz: "))
+    
+    id: uuid.UUID = uuid.uuid4()
+    created_at: datetime = datetime.now(timezone.utc)
+    
+    new_account: BankAccount = BankAccount(
         id=id,
         name=name,
         account_number=account_number,
         balance=balance,
         created_at=created_at
-
     )
+    
+    global accounts
+    accounts.append(new_account)
+    
     return new_account
 
 def view_all_accounts():
@@ -119,22 +108,20 @@ def search_account():
     if is_end == '\n':
         return None
 
-# def deposit():
-#     pass
+def deposit():
+    pass
 
-# def withdraw():
-#     pass
+def withdraw():
+    pass
 
-# def view_transactions():
-#     pass
+def view_transactions():
+    pass
 
-# def delete_account():
-#     pass
-
-
+def delete_account():
+    pass
 
 
-
+# =============== Main Menu Loop
 
 def main_menu() -> None:
     while True:        
@@ -151,13 +138,13 @@ def main_menu() -> None:
         elif choice == 3:
             search_account()
         elif choice == 4:
-            pass
+            deposit()
         elif choice == 5:
-            pass
+            withdraw()
         elif choice == 6:
-            pass
+            view_transactions()
         elif choice == 7:
-            pass
+            delete_account()
         else:
             print("Exit")
             break
