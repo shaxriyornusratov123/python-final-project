@@ -48,20 +48,60 @@ class BankAccount:
     
 
     def deposit(self,amount:int):
-        amount=int(input("enter amount! "))
-        self.balance+=amount
+        transaction=Transaction(uuid.uuid4,
+                                "deposit",
+                                "air",
+                                self.name,
+                                amount,
+                                "pending",
+                                datetime.now(timezone.utc)
+                                )
+        if 0<amount<=self.balance:
+            self.balance+=amount
+            transaction.status="success"
+        else:
+            transaction.status="failed"
+        self.transactions.append(transaction)
         return self.balance
     
-    def withdraw(self,amount):
+    def withdraw(self,amount:int):
+        transaction=Transaction(uuid.uuid4,
+                                "withdraw",
+                                self.name,
+                                "air",
+                                amount,
+                                "pending",
+                                datetime.now(timezone.utc)
+                                )
         self.balance-=amount
-        if amount>self.balance:
-            raise "balansda yetarli mablag' mavjud emas! "
-        
+        if 0<amount<=self.balance:
+            self.balance-=amount
+            transaction.status="success"
+        else:
+            transaction.status="failed"
+        self.transactions.append(transaction)
+        return self.balance
+    
+    def view_transactins(self):
+        return self.transactions
+    
+
+    
 
 
 # =============== Globals
 
 accounts: list[BankAccount] = []
+
+
+def delete(card_number):
+    global accounts
+    for acc in accounts:
+        if acc.account_number==card_number:
+            accounts.remove(acc)
+            print ("akkount uchirildi ")
+            return 
+        print("akkount topilmadi ")
 menu_text: str = """=== Bank System Menu ===
 1. Create New Account
 2. View All Accounts
@@ -150,13 +190,28 @@ def main_menu() -> None:
         elif choice == 3:
             search_account()
         elif choice == 4:
-            BankAccount.deposit()
+            card_number = input("card_number = ")
+            for acc in accounts:
+                if acc.account_number == card_number:
+                    amount = int(input("amount = "))
+                    acc.deposit(amount)
         elif choice == 5:
-            BankAccount.withdraw()
+            card_number = input("card_number = ")
+            for acc in accounts:
+                if acc.account_number == card_number:
+                    amount = int(input("amount = "))
+                    acc.withdraw(amount)
         elif choice == 6:
-            view_transactions()
+            transactions = None
+            card_number = input("card_number = ")
+            for acc in accounts:
+                if acc.account_number == card_number:
+                    transactions = acc.get_transactions()
+            for t in transactions:
+                print(str(t))
         elif choice == 7:
-            delete_account()
+            card_number = input("card_number = ")
+            delete(card_number)
         else:
             print("Exit")
             break
