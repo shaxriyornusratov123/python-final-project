@@ -174,7 +174,7 @@ def create_account() -> BankAccount:
     account_number: str = input("Akkaunt raqamingiz: ")
     balance: int = int(input("Mavjud balansingiz: "))
     
-    created_at: datetime = datetime.now(timezone.utc)
+    created_at: datetime = datetime.now()
     
     new_account: BankAccount = BankAccount(
         username=username,
@@ -185,13 +185,13 @@ def create_account() -> BankAccount:
         created_at=created_at
     )
     
-    accounts["records"].append(new_account)
+    accounts["records"].append(new_account.to_dict())
     accounts["count"]+=1
     
     return new_account
 
 def view_all_accounts():
-    global account
+    global accounts
     print("Barcha akkauntlar ro'yxati:")
     for i, account in enumerate(accounts["records"]):
         print(f"{i+1}. {account["name"]} - {account["balance"]}")
@@ -206,9 +206,10 @@ def search_account():
     
     print("===== Natijalar =====")
     for i, account in enumerate(accounts["records"]):
-        if account["is_active"]==True and  searched_name.lower() in account["name"].lower():
-            print(f"{i+1}. {account["id"]} - {account["name"]} - {account["account_number"]}")
-
+        if account["is_active"] == True and searched_name.lower() in account["name"].l4ower():
+            print(
+                f"{i + 1}. {account["id"]} - {account["name"]} - {account["account_number"]}"
+            )
     is_end: str = input("Operatsiyani yakunlashni istaysizmi? ")
     if is_end == '\n':
         return None

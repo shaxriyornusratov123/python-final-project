@@ -2,7 +2,7 @@ import time
 
 from mybank.lifespan import load_accounts,load_transactions,save_accounts,save_transactions
 from mybank.settings import current_account,accounts,transactions
-from mybank.account import login, search_account,view_all_accounts
+from mybank.account import login, search_account,view_all_accounts, create_account
 
 menu_text: str = """=== Bank System Menu ===
 0. Log In 
@@ -41,11 +41,11 @@ def main_menu() -> None:
             search_account()
         elif choice == 4:
             while True:
-                amnt=int(input("Kiritmoqchi bo'lgan summangizni kiriting: "))
-                if amnt<=0:
-                    print("Siz manfiy son kirita olmaysiz!  ")
+                amnt = int(input("Kiritmoqchi bo'lgan summangizni kiriting: "))
+                if amnt <= 0:
+                    print("Manfiy sonni kirita olmaysiz!")
                     continue
-                break 
+                break
             current_account.deposit(amount=amnt)
         elif choice == 5:
             while True:
